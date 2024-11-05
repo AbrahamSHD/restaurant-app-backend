@@ -9,9 +9,11 @@ import { PrismaModule } from './prisma/prisma.module';
 import { MembershipModule } from './membership/membership.module';
 import { PromotionModule } from './promotion/promotion.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { RolesModule } from './roles/roles.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
-  imports: [AuthModule, CommonModule, OrdersModule, PaymentModule, ProductModule, SeedModule, PrismaModule, MembershipModule, PromotionModule, ReviewsModule],
+  imports: [AuthModule, CommonModule, OrdersModule, PaymentModule, ProductModule, SeedModule, PrismaModule, MembershipModule, PromotionModule, ReviewsModule, RolesModule, FilesModule],
   controllers: [],
   providers: [],
 })
