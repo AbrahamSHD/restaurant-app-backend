@@ -8,9 +8,10 @@ import { SeedModule } from './seed/seed.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { MembershipModule } from './membership/membership.module';
 import { PromotionModule } from './promotion/promotion.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
-  imports: [AuthModule, CommonModule, OrdersModule, PaymentModule, ProductModule, SeedModule, PrismaModule, MembershipModule, PromotionModule],
+  imports: [AuthModule, CommonModule, OrdersModule, PaymentModule, ProductModule, SeedModule, PrismaModule, MembershipModule, PromotionModule, ReviewsModule],
   controllers: [],
   providers: [],
 })
