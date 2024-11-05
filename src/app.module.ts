@@ -4,9 +4,10 @@ import { CommonModule } from './common/common.module';
 import { OrdersModule } from './orders/orders.module';
 import { PaymentModule } from './payment/payment.module';
 import { ProductModule } from './product/product.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
-  imports: [AuthModule, CommonModule, OrdersModule, PaymentModule, ProductModule],
+  imports: [AuthModule, CommonModule, OrdersModule, PaymentModule, ProductModule, SeedModule],
   controllers: [],
   providers: [],
 })
