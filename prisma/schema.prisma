@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -11,4 +6,131 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum Category {
+  APPETIZER
+  MAIN_COURSE
+  DESSERT
+  BEVERAGE
+  ALCOHOLIC_BEVERAGE
+  SOUP
+  SALAD
+  SNACK
+  SIDE_DISH
+  VEGETARIAN
+  VEGAN
+  GLUTEN_FREE
+  SEAFOOD
+  STEAK
+  PASTA
+  PIZZA
+  SUSHI
+  COFFEE
+  TEA
+  SMOOTHIE
+  JUICE
+}
+
+model Orders {
+  id String @id @unique @default(uuid())
+  userId String
+  user Users @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  status String @default("pending")
+  totalPrice Float @default(0)
+  products DetailsOrder[]
+  tableId String
+  table Tables @relation(fields: [tableId], references: [id])
+}
+
+model DetailsOrder {
+  orderId String
+  productId String
+  quantity Int @default(1)
+  price Float
+
+  order Orders @relation(fields: [orderId], references: [id])
+  product Products @relation(fields: [productId], references: [id])
+
+  @@id([orderId, productId])
+}
+
+model Products {
+  id String @id @unique @default(uuid())
+  name String
+  description String
+  price Float @default(0)
+  files Files[]
+  categories Category[]
+  inventory Inventory[]
+  orders DetailsOrder[]
+  promotions Promotion[] @relation("ProductPromotions")
+}
+
+model Files {
+  id String @id @unique @default(uuid())
+  productId String
+  product Products @relation(fields: [productId], references: [id])
+  url String
+}
+
+model Inventory {
+  id String @id @unique @default(uuid())
+  productId String
+  product Products @relation(fields: [productId], references: [id])
+  quantity Int @default(0)
+}
+
+model Membership {
+  id String @id @unique @default(uuid())
+  name String
+  description String
+  price Float @default(0)
+  users Users[]
+}
+
+model Promotion {
+  id String @id @unique @default(uuid())
+  name String
+  description String?
+  discountPercentage Float @default(0)
+  products Products[] @relation("ProductPromotions")
+}
+
+model Tables {
+  id String @id @unique @default(uuid())
+  name String
+  capacity Int @default(1)
+  reservations Reservations[]
+  orders Orders[]
+}
+
+model Reservations {
+  id String @id @unique @default(uuid())
+  tableId String
+  table Tables @relation(fields: [tableId], references: [id])
+  userId String
+  user Users @relation(fields: [userId], references: [id])
+  date DateTime
+}
+
+model Roles {
+  id String @id @unique @default(uuid())
+  name String
+  description String
+  users Users[]
+}
+
+model Users {
+  id String @id @unique @default(uuid())
+  name String
+  email String @unique
+  password String
+  roleId String
+  role Roles @relation(fields: [roleId], references: [id])
+  membershipId String
+  membership Membership @relation(fields: [membershipId], references: [id])
+  reservations Reservations[]
+  orders Orders[]
 }
