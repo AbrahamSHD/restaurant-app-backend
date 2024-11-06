@@ -16,7 +16,23 @@ import { DetailsOrderModule } from './details-order/details-order.module';
 import { ReservationsModule } from './reservations/reservations.module';
 
 @Module({
-  imports: [AuthModule, CommonModule, OrdersModule, PaymentModule, ProductModule, SeedModule, PrismaModule, MembershipModule, PromotionModule, ReviewsModule, RolesModule, FilesModule, InventoryModule, DetailsOrderModule, ReservationsModule],
+  imports: [
+    AuthModule,
+    CommonModule,
+    OrdersModule,
+    PaymentModule,
+    ProductModule,
+    SeedModule,
+    PrismaModule,
+    MembershipModule,
+    PromotionModule,
+    ReviewsModule,
+    RolesModule,
+    FilesModule,
+    InventoryModule,
+    DetailsOrderModule,
+    ReservationsModule,
+  ],
   controllers: [],
   providers: [],
 })
