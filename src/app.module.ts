@@ -12,9 +12,10 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { RolesModule } from './roles/roles.module';
 import { FilesModule } from './files/files.module';
 import { InventoryModule } from './inventory/inventory.module';
+import { DetailsOrderModule } from './details-order/details-order.module';
 
 @Module({
-  imports: [AuthModule, CommonModule, OrdersModule, PaymentModule, ProductModule, SeedModule, PrismaModule, MembershipModule, PromotionModule, ReviewsModule, RolesModule, FilesModule, InventoryModule],
+  imports: [AuthModule, CommonModule, OrdersModule, PaymentModule, ProductModule, SeedModule, PrismaModule, MembershipModule, PromotionModule, ReviewsModule, RolesModule, FilesModule, InventoryModule, DetailsOrderModule],
   controllers: [],
   providers: [],
 })
