@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { ExceptionHandler } from '../common/helpers';
 
 @Injectable()
 export class RolesService {
@@ -9,9 +10,11 @@ export class RolesService {
 
   constructor(private prisma: PrismaService) {}
 
-  async findRole(name: string) {
+  async findRole(term: string) {
     const role = await this.prisma.roles.findFirst({
-      where: { name },
+      where: {
+        OR: [{ id: term }, { name: term }],
+      },
     });
 
     return role;
@@ -34,25 +37,92 @@ export class RolesService {
         },
       });
 
-      return role;
+      return { role };
     } catch (error) {
-      this.logger.error(error);
+      ExceptionHandler.handle(error);
     }
   }
 
   async findAllRoles() {
-    return;
+    try {
+      const roles = await this.prisma.roles.findMany();
+
+      return { roles };
+    } catch (error) {
+      ExceptionHandler.handle(error);
+    }
   }
 
-  async findOneRole(id: string) {
-    return `This action returns a #${id} role`;
+  async findOneRoleByTerm(term: string) {
+    try {
+      const role = await this.findRole(term);
+
+      if (!role) {
+        throw new BadRequestException(`Role with id/name: ${term} not found`);
+      }
+
+      return { role };
+    } catch (error) {
+      ExceptionHandler.handle(error);
+    }
   }
 
   async updateRole(id: string, updateRoleDto: UpdateRoleDto) {
-    return `This action updates a #${id} role`;
+    try {
+      const findRole = await this.findRole(id);
+
+      const { name, ...data } = updateRoleDto;
+
+      if (!findRole) {
+        throw new BadRequestException(`Role with id: ${id} not found`);
+      }
+
+      if (name) {
+        const roleWithSameName = await this.prisma.roles.findFirst({
+          where: { name: name },
+        });
+
+        if (roleWithSameName && roleWithSameName.id !== id) {
+          throw new BadRequestException(
+            `Role with name: ${updateRoleDto.name} already exists`,
+          );
+        }
+      }
+
+      const roleUpdated = await this.prisma.roles.update({
+        where: { id },
+        data: {
+          name,
+          ...data,
+        },
+      });
+
+      return {
+        role: { ...roleUpdated },
+      };
+    } catch (error) {
+      ExceptionHandler.handle(error);
+    }
   }
 
   async removeRole(id: string) {
-    return `This action removes a #${id} role`;
+    try {
+      const role = await this.findRole(id);
+
+      if (!role) {
+        throw new BadRequestException(`Role with id: ${id} not found`);
+      }
+
+      await this.prisma.roles.delete({
+        where: { id },
+      });
+
+      return {
+        status: 200,
+        message: 'ok',
+      };
+    } catch (error) {
+      ExceptionHandler.handle(error);
+    }
   }
 }
