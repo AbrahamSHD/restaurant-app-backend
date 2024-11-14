@@ -26,9 +26,9 @@ export class RolesController {
     return this.rolesService.findAllRoles();
   }
 
-  @Get(':id')
-  findOneRole(@Param('id', ParseUUIDPipe) id: string) {
-    return this.rolesService.findOneRole(id);
+  @Get(':term')
+  findOneRoleByTerm(@Param('term') term: string) {
+    return this.rolesService.findOneRoleByTerm(term);
   }
 
   @Patch(':id')
