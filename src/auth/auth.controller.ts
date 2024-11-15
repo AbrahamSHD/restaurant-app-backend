@@ -32,7 +32,7 @@ export class AuthController {
 
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.authService.findOneUser(+id);
+    return this.authService.findOneUser(id);
   }
 
   @Patch(':id')
