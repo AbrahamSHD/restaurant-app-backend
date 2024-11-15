@@ -26,4 +26,14 @@ export class CreateAuthDto {
   @IsString()
   @MinLength(14)
   password: string;
+
+  // @IsNotEmpty()
+  @IsOptional()
+  @IsString()
+  @IsUUID()
+  roleId: string;
+
+  @IsOptional()
+  @IsString()
+  membership: string;
 }
