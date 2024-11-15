@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -27,13 +28,21 @@ export class CreateAuthDto {
   @MinLength(14)
   password: string;
 
-  // @IsNotEmpty()
   @IsOptional()
   @IsString()
-  @IsUUID()
   roleId: string;
 
   @IsOptional()
   @IsString()
-  membership: string;
+  membershipId: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  reservations: string[];
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  orders: string[];
 }
