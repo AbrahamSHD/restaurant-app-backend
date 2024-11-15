@@ -26,7 +26,7 @@ export class RolesService {
 
       const roleExist = await this.findRole(name);
 
-      if (roleExist) {
+      if (!!roleExist) {
         throw new BadRequestException(`Role with name: ${name}, already exist`);
       }
 
@@ -77,14 +77,14 @@ export class RolesService {
         throw new BadRequestException(`Role with id: ${id} not found`);
       }
 
-      if (name) {
+      if (!!name) {
         const roleWithSameName = await this.prisma.roles.findFirst({
-          where: { name: name },
+          where: { name },
         });
 
         if (roleWithSameName && roleWithSameName.id !== id) {
           throw new BadRequestException(
-            `Role with name: ${updateRoleDto.name} already exists`,
+            `Role with name: ${name} already exists`,
           );
         }
       }
