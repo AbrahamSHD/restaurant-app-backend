@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -6,8 +6,6 @@ import { ExceptionHandler } from '../common/helpers';
 
 @Injectable()
 export class RolesService {
-  private readonly logger = new Logger('RolesService');
-
   constructor(private prisma: PrismaService) {}
 
   async findRole(term: string) {

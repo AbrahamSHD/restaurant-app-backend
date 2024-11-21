@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateAuthDto, LoginAuthDto, UpdateAuthDto } from './dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -8,7 +8,6 @@ import { JwtPayload } from '../common/interfaces';
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger('AuthService');
   private readonly bcrypt = new bcryptAdapter();
   constructor(
     private prisma: PrismaService,
@@ -22,7 +21,6 @@ export class AuthService {
       const token = this.jwtService.sign(payload);
       return token;
     } catch (error) {
-      this.logger.error('Error generating JWT: ', error);
       throw new BadRequestException('Could not generate JWT');
     }
   }
@@ -138,26 +136,6 @@ export class AuthService {
     }
   }
 
-  // async updateUser(id: string, updateAuthDto: UpdateAuthDto) {
-  //   try {
-  //     const userExist = await this.findOneUserByTerm(id);
-
-  //     if (!userExist) {
-  //       throw new BadRequestException(`User with id: ${id} not fund`);
-  //     }
-
-  //     const userUpdated = this.prisma.users.update({
-  //       where: { id },
-  //       data: {
-  //         ...updateAuthDto,
-  //       },
-  //     });
-
-  //     return { user: { userUpdated } };
-  //   } catch (error) {
-  //     ExceptionHandler.handle(error);
-  //   }
-  // }
   async updateUser(id: string, updateAuthDto: UpdateAuthDto) {
     try {
       const userExist = await this.findOneUserByTerm(id);
@@ -179,11 +157,11 @@ export class AuthService {
 
       if (!!orders) {
         throw new BadRequestException(
-          `Please update your reservations in the reservation module.`,
+          `Please update your orders in the reservation module.`,
         );
       }
 
-      if (!!orders) {
+      if (!!membershipId) {
         throw new BadRequestException(`Membership Module under construction`);
       }
 
